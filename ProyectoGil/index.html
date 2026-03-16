@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+
+<title>Registro de Empleados</title>
+
+<script type="module" src="js/lib/manejaErrores.js"></script>
+
+</head>
+
+<body>
+
+<h1>Registro de Empleados</h1>
+
+<p><a href="agrega.html">Agregar empleado</a></p>
+
+<h2>Tipo de cambio</h2>
+
+<p>
+1 MXN = <span id="usd">Cargando...</span> USD
+</p>
+
+<ul id="lista">
+<li><progress max="100">Cargando…</progress></li>
+</ul>
+
+<script type="module">
+
+import { descargaVista } from "./js/lib/descargaVista.js"
+
+descargaVista("php/empleado-vista-index.php")
+
+async function cargaTipoCambio() {
+
+ const respuesta = await fetch("php/api-moneda.php")
+ const json = await respuesta.json()
+
+ usd.textContent = json.usd
+
+}
+
+cargaTipoCambio()
+
+</script>
+
+</body>
+
+</html>

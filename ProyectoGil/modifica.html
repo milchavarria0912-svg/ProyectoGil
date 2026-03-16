@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width">
+
+<title>Modificar Empleado</title>
+
+<script type="module" src="js/lib/manejaErrores.js"></script>
+
+</head>
+
+<body>
+
+<form id="formulario">
+
+<h1>Modificar Empleado</h1>
+
+<p><a href="index.html">Cancelar</a></p>
+
+<input name="id" type="hidden">
+
+<p>
+<label>
+Nombre *
+<input name="nombre">
+</label>
+</p>
+
+<p>
+<label>
+Puesto *
+<input name="puesto">
+</label>
+</p>
+
+<p>
+<label>
+Horas *
+<input name="horas" type="number">
+</label>
+</p>
+
+<p>
+<label>
+Pago *
+<input name="pago" type="number">
+</label>
+</p>
+
+<p>
+<button type="submit">Guardar</button>
+
+<button id="botonEliminar" type="button">
+Eliminar
+</button>
+</p>
+
+</form>
+
+<script type="module">
+
+import { descargaVista } from "./js/lib/descargaVista.js"
+import { submitAccion } from "./js/lib/submitAccion.js"
+import { accionElimina } from "./js/lib/accionElimina.js"
+
+const params = new URL(location.href).searchParams
+
+descargaDatos()
+
+async function descargaDatos() {
+
+if (params.size > 0) {
+
+await descargaVista("php/empleado-vista-modifica.php?" + params)
+
+formulario.addEventListener(
+"submit",
+event => submitAccion(
+event,
+"php/empleado-modifica.php",
+formulario,
+"index.html"
+)
+)
+
+botonEliminar.addEventListener(
+"click",
+() => accionElimina(
+"php/empleado-elimina.php",
+formulario,
+"Confirma la eliminación",
+"index.html"
+)
+)
+
+}
+
+}
+
+</script>
+
+</body>
+</html>
