@@ -1,7 +1,10 @@
-<?php
+<?php 
 
 require_once __DIR__ . "/lib/manejaErrores.php";
+require_once __DIR__ . "/lib/recibeEnteroObligatorio.php";
 require_once __DIR__ . "/lib/devuelveJson.php";
+
+$cantidad = recibeEnteroObligatorio("cantidad");
 
 $url = "https://open.er-api.com/v6/latest/MXN";
 
@@ -11,7 +14,10 @@ $datos = json_decode($respuesta, true);
 
 $usd = $datos["rates"]["USD"];
 
+// Conversión
+$resultado = $cantidad * $usd;
+
 devuelveJson([
- "mxn" => 1,
- "usd" => $usd
+ "mxn" => $cantidad,
+ "usd" => $resultado
 ]);
