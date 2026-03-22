@@ -24,6 +24,17 @@
 1 MXN = <span id="usd">Cargando...</span> USD
 </p>
 
+<h2>Convertidor MXN → USD</h2>
+
+<p>
+<input id="cantidad" type="number" placeholder="Ingresa MXN">
+<button id="btnConvertir">Convertir</button>
+</p>
+
+<p>
+Resultado: <span id="resultado">--</span> USD
+</p>
+
 <ul id="lista">
 <li><progress max="100">Cargando…</progress></li>
 </ul>
@@ -34,9 +45,10 @@ import { descargaVista } from "./js/lib/descargaVista.js"
 
 descargaVista("php/empleado-vista-index.php")
 
+// 🔹 Tipo de cambio base (1 MXN)
 async function cargaTipoCambio() {
 
- const respuesta = await fetch("php/api-moneda.php")
+ const respuesta = await fetch("php/api-moneda.php?cantidad=1")
  const json = await respuesta.json()
 
  usd.textContent = json.usd
@@ -44,6 +56,23 @@ async function cargaTipoCambio() {
 }
 
 cargaTipoCambio()
+
+// 🔹 Convertidor
+btnConvertir.addEventListener("click", convertir)
+
+async function convertir() {
+
+ const valor = cantidad.value
+
+ const respuesta = await fetch(
+  "php/api-moneda.php?cantidad=" + valor
+ )
+
+ const json = await respuesta.json()
+
+ resultado.textContent = json.usd
+
+}
 
 </script>
 
