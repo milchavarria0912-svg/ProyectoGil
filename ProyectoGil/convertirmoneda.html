@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+
+ <meta charset="UTF-8">
+ <meta name="viewport" content="width=device-width">
+
+ <title>Conversión MXN a USD</title>
+
+ <script type="module" src="js/lib/manejaErrores.js"></script>
+
+</head>
+
+<body>
+
+ <h1>Conversión MXN → USD</h1>
+
+ <p><a href="index.html">Cancelar</a></p>
+
+ <p>
+  <input id="cantidad" type="number" placeholder="Cantidad en MXN">
+ </p>
+
+ <p>
+  <button id="boton">Convertir</button>
+ </p>
+
+ <p id="resultado"></p>
+
+ <script type="module">
+
+  import { consume } from "./js/lib/consume.js"
+  import { enviaJsonRecibeJson } from "./js/lib/_enviaJsonRecibeJson.js"
+  import { muestraError } from "./js/lib/muestraError.js"
+
+ 
+  const boton = document.getElementById("boton")
+  const cantidadInput = document.getElementById("cantidad")
+  const resultado = document.getElementById("resultado")
+
+  boton.addEventListener("click", convertir)
+
+  async function convertir() {
+   try {
+
+    const datos = {
+    
+     cantidad: Number(cantidadInput.value)
+    }
+
+    const respuesta = await consume(
+     enviaJsonRecibeJson(
+      "php/api-moneda.php", datos)
+    )
+
+    const json = await respuesta.json()
+
+    resultado.textContent =
+     `USD: ${json.usd} (Tipo: ${json.tipoCambio})`
+
+   } catch (error) {
+    muestraError(error)
+   }
+  }
+
+ </script>
+
+</body>
+
+</html>
